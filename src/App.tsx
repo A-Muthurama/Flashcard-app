@@ -9,6 +9,7 @@ import {
   doc,
   serverTimestamp,
   Timestamp,
+  FieldValue,
 } from "firebase/firestore";
 import { db, auth, provider } from "./firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
@@ -19,7 +20,7 @@ type Card = {
   question: string;
   answer: string;
   createdBy?: string;
-  createdAt?: Timestamp;
+  createdAt?: Timestamp | FieldValue;
 };
 
 function App() {
@@ -43,9 +44,7 @@ function App() {
   useEffect(() => {
     audio.loop = true;
     if (musicPlaying) {
-      audio.play().catch((err) =>
-        console.warn("Autoplay may be blocked", err)
-      );
+      audio.play().catch((err) => console.warn("Autoplay may be blocked", err));
     }
     return () => audio.pause();
   }, [audio, musicPlaying]);
@@ -56,8 +55,14 @@ function App() {
         const querySnapshot = await getDocs(flashcardRef);
         const publicCards: Card[] = [];
         querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data() as Card;
-          publicCards.push({ id: docSnap.id, ...data });
+          const data = docSnap.data();
+          publicCards.push({
+            id: docSnap.id,
+            question: data.question,
+            answer: data.answer,
+            createdBy: data.createdBy,
+            createdAt: data.createdAt as Timestamp | FieldValue,
+          });
         });
         setCards(publicCards);
       } catch (err) {
@@ -84,10 +89,9 @@ function App() {
     signOut(auth);
   };
 
-  const formatDate = (timestamp?: Timestamp) => {
-    if (!timestamp) return "Unknown";
-    const date = timestamp.toDate();
-    return date.toLocaleString();
+  const formatDate = (timestamp?: Timestamp | FieldValue) => {
+    if (!timestamp || typeof (timestamp as Timestamp).toDate !== "function") return "Unknown";
+    return (timestamp as Timestamp).toDate().toLocaleString();
   };
 
   const nextCard = () => {
@@ -124,11 +128,15 @@ function App() {
 
     try {
       const docRef = await addDoc(flashcardRef, cardWithMeta);
-      const added = { ...cardWithMeta, id: docRef.id };
-      const updated = [...cards, added];
-      setCards(updated);
+      const added: Card = {
+        ...newCard,
+        id: docRef.id,
+        createdBy,
+        createdAt: new Date() as unknown as Timestamp,
+      };
+      setCards((prevCards) => [...prevCards, added]);
       setNewCard({ question: "", answer: "" });
-      setIndex(updated.length - 1);
+      setIndex(cards.length);
       setFlipped(false);
     } catch (error) {
       console.error("Error adding flashcard:", error);
@@ -164,7 +172,7 @@ function App() {
       console.error("Error updating card:", error);
     }
   };
-
+  
   const handleExport = (type: string) => {
     switch (type) {
       case "csv":
