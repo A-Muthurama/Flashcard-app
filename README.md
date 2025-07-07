@@ -30,7 +30,7 @@ This app allows users to create, view, and study flashcards. Logged-in users can
 
 ## 🚀 Live Demo
 
-👉 [Click here to try it live](https://your-vercel-link.vercel.app)
+👉 [Click here to try it live](https://flashcard-app-plum.vercel.app/)
 
 ## 📦 Installation & Setup
 
