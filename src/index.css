@@ -1,0 +1,200 @@
+body {
+  margin: 0;
+  padding: 0;
+  background:
+  linear-gradient(rgba(255, 0, 255, 0.5), rgba(255, 255, 0, 0.5)),
+  linear-gradient(rgba(0, 255, 255, 0.5), rgba(255, 105, 180, 0.5));
+
+  font-family: "Segoe UI", sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.dark-mode {
+  background-color: #111;
+  color: #9f9797;
+}
+
+.vanta-bg {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  color: inherit;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Toggle */
+.toggle-btn {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.dark-mode .toggle-btn {
+  background-color: #ffe600;
+  color: #000;
+}
+
+/* Flashcard Flip */
+.flashcard {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 100%;
+  height: 240px;
+  margin: 2rem auto 1rem;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  font:bold;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: linear-gradient(to right, #646060, #8f8ff0);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.25rem;
+}
+.card-front{
+  font:bold;
+}
+.card-back {
+  transform: rotateY(180deg);
+  font:bold;
+  font-size: 2.25rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ background: linear-gradient(to right, #646060, #8f8ff0);
+}
+
+.dark-mode .card-front,
+.dark-mode .card-back,
+.dark-mode .grid-card,
+.dark-mode .add-card {
+  background: #2c2c2c;
+  color: white;
+}
+
+.counter {
+  margin: 1rem 0;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-row button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #4a90e2;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-row button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Grid */
+.grid-view {
+  margin-top: 2rem;
+  display: grid;
+  gap: 3.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.grid-card {
+  background: rgb(150, 202, 236);
+  border-radius:9px;
+  padding: 1rem;
+  width:290px;
+  height: 140px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Add Card */
+.add-card {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: linear-gradient(to right, #fceabb, #f8b500);
+
+
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-card input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.add-card button {
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .btn-row button {
+    width: 100%;
+  }
+
+  .flashcard {
+    height: 200px;
+  }
+}
